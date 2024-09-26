@@ -18,7 +18,7 @@ const Nav = () => {
     return (
         <div className="navcontainer">
             <nav className="nav">
-                <div className="nav-upper-options">
+                <div>
                     <Link to="/" className="nav-option option1">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210182148/Untitled-design-(29).png"

@@ -33,11 +33,11 @@ body {
     height: 100vh;
 }
 
-.navcontainer {
+/* .navcontainer {
     width: 250px;
     background-color: #fff;  
     height: 100%;
-}
+} */
 
 .content-container {
     flex-grow: 1;
@@ -203,7 +203,8 @@ justify-content: space-evenly;
 align-items: center; 
 flex-wrap: wrap; 
 gap: 50px; 
-} 
+}
+
 .nav { 
 min-height: 91vh; 
 width: 250px; 
@@ -218,14 +219,7 @@ justify-content: space-between;
 overflow: hidden; 
 padding: 30px 0 20px 10px; 
 } 
-.navcontainer { 
-height: calc(100vh - 70px); 
-width: 250px; 
-position: relative; 
-overflow-y: scroll; 
-overflow-x: hidden; 
-transition: all 0.5s ease-in-out; 
-} 
+
 .navcontainer::-webkit-scrollbar { 
 display: none; 
 } 
