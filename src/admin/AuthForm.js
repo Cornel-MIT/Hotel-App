@@ -1,6 +1,8 @@
+
 import React, { useState } from 'react';
-import { auth } from '../firebase';  
+import { auth, db } from '../firebase';  
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { collection, addDoc } from 'firebase/firestore'; 
 import { useNavigate } from 'react-router-dom';
 import './SignInForm.css';
 
@@ -24,8 +26,16 @@ const AuthForm = () => {
         navigate('/'); 
       } else {
         const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-        
+
         await updateProfile(userCredential.user, { displayName: fullName });
+
+        await addDoc(collection(db, 'users'), {
+          uid: userCredential.user.uid, 
+          fullName: fullName,
+          email: email,
+          createdAt: new Date(),
+        });
+
         navigate('/');  
       }
     } catch (error) {
