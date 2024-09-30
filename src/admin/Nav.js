@@ -9,7 +9,7 @@ const Nav = () => {
     const handleLogout = async () => {
         try {
             await logout(); 
-            navigate('/login'); 
+            navigate('/authform');
         } catch (error) {
             console.error('Logout failed:', error);
         }
@@ -46,11 +46,11 @@ const Nav = () => {
                         <h3>Add Rooms</h3>
                     </Link>
 
-                    <Link to="/hotel" className="nav-option option4">
+                    <Link to="/hotels" className="nav-option option4">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
                             className="nav-img"
-                            alt="institution"
+                            alt="rooms"
                         />
                         <h3>Hotel</h3>
                     </Link>
@@ -73,14 +73,15 @@ const Nav = () => {
                         <h3>Settings</h3>
                     </Link>
 
-                    <a href="#" className="nav-option logout" onClick={handleLogout}>
-                        <img
-                            src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
-                            className="nav-img"
-                            alt="logout"
-                        />
-                        <h3>Logout</h3>
-                    </a>
+                    <div className="nav-option logout" onClick={handleLogout}>
+                      <img
+                         src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/7.png"
+                         className="nav-img"
+                         alt="logout"
+                       />
+                       <h3>Logout</h3>
+                   </div>
+
                 </div>
             </nav>
         </div>

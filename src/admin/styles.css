@@ -33,12 +33,6 @@ body {
     height: 100vh;
 }
 
-/* .navcontainer {
-    width: 250px;
-    background-color: #fff;  
-    height: 100%;
-} */
-
 .content-container {
     flex-grow: 1;
     padding: 20px;

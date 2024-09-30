@@ -1,0 +1,25 @@
+.profile-page {
+    max-width: 800px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .profile-picture {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  ul {
+    list-style-type: none;
+  }
+  
+  li {
+    margin: 20px 0;
+  }
+  
+  h4 {
+    margin: 10px 0;
+  }
+  
