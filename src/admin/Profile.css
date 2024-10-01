@@ -1,25 +1,86 @@
 .profile-page {
-    max-width: 800px;
-    margin: auto;
-    text-align: center;
-  }
-  
-  .profile-picture {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-  
-  ul {
-    list-style-type: none;
-  }
-  
-  li {
-    margin: 20px 0;
-  }
-  
-  h4 {
-    margin: 10px 0;
-  }
-  
+  width: 60%;
+  margin: auto;
+  font-family: Arial, sans-serif;
+}
+
+.profile-container {
+  display: flex;
+  align-items: flex-start;
+  margin-top: 20px;
+}
+
+.profile-picture-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 50px;
+}
+
+.profile-picture {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+.edit-picture-btn {
+  background-color: #6C63FF;
+  color: white;
+  border: none;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.profile-form label {
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.profile-form input {
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: space-between;
+}
+
+.form-actions button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.form-actions button:nth-child(1) {
+  background-color: #6C63FF;
+  color: white;
+}
+
+.form-actions button:nth-child(2) {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.back-btn {
+  background-color: #6C63FF;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  margin-top: 20px;
+  cursor: pointer;
+}
