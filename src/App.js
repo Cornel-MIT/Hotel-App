@@ -98,3 +98,59 @@ export default App;
 // }
 
 // export default App;
+
+
+// import React from 'react';
+// import { Routes, Route, Navigate } from 'react-router-dom';
+// import { useAuth } from './auth/useAuth';
+// import PrivateRoute from './auth/PrivateRoute';
+// import AdminHome from './admin/Home';
+// import UserHome from './user/Home';
+// import AddRooms from './admin/AddRooms';
+// import Bookings from './admin/Bookings';
+// import Hotels from './admin/Hotels';
+// import Profile from './admin/Profile';
+// import RoomDetails from './user/RoomDetails';
+// import AuthForm from './admin/AuthForm';
+
+// const App = () => {
+//   const { user } = useAuth();
+
+//   return (
+//     <Routes>
+//       <Route path="/admin/*" element={<PrivateRoute><AdminApp /></PrivateRoute>} />
+
+//       <Route path="/user/*" element={<UserApp />} />
+
+//       <Route path="/authform" element={<AuthForm />} />
+
+//       <Route path="*" element={<Navigate to={user ? "/admin" : "/user"} />} />
+//     </Routes>
+//   );
+// };
+
+// const AdminApp = () => {
+//   return (
+//     <Routes>
+//       <Route path="/" element={<AdminHome />} />
+//       <Route path="/add-rooms" element={<AddRooms />} />
+//       <Route path="/bookings" element={<Bookings />} />
+//       <Route path="/hotels" element={<Hotels />} />
+//       <Route path="/profile" element={<Profile />} />
+//     </Routes>
+//   );
+// };
+
+// const UserApp = () => {
+//   const rooms = []; 
+//   return (
+//     <Routes>
+//       <Route path="/" element={<UserHome />} />
+//       <Route path="/rooms/:roomId" element={<RoomDetails rooms={rooms} />} />
+//     </Routes>
+//   );
+// };
+
+// export default App;
+
+

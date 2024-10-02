@@ -9,6 +9,9 @@ const AddRoom = () => {
   const [price, setPrice] = useState(''); 
   const [description, setDescription] = useState(''); 
   const [image, setImage] = useState(null);
+  const [availableDays, setAvailableDays] = useState(''); 
+  const [adults, setAdults] = useState(''); 
+  const [children, setChildren] = useState(''); 
   const [showPopup, setShowPopup] = useState(false);
   const [error, setError] = useState(''); 
   const [loading, setLoading] = useState(false);
@@ -27,7 +30,7 @@ const AddRoom = () => {
 
     try {
 
-      if (!roomName || !price || !description || !image) {
+      if (!roomName || !price || !description || !image || !availableDays || !adults || !children) {
         throw new Error('All fields are required');
       }
 
@@ -42,6 +45,9 @@ const AddRoom = () => {
         price: Number(price), 
         description,
         imageUrl, 
+        availableDays: Number(availableDays), 
+        adults: Number(adults), 
+        children: Number(children), 
         createdAt: serverTimestamp(), 
       };
 
@@ -53,6 +59,9 @@ const AddRoom = () => {
       setPrice('');
       setDescription('');
       setImage(null);
+      setAvailableDays(''); 
+      setAdults(''); 
+      setChildren(''); 
       setShowPopup(true); 
 
     } catch (error) {
@@ -95,6 +104,36 @@ const AddRoom = () => {
             onChange={(e) => setDescription(e.target.value)}
             required
             style={{ width: '100%', padding: '5px', minHeight: '100px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <label>Available Days:</label> 
+          <input
+            type="number"
+            value={availableDays}
+            onChange={(e) => setAvailableDays(e.target.value)}
+            required
+            style={{ width: '100%', padding: '5px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <label>Adults:</label>
+          <input
+            type="number"
+            value={adults}
+            onChange={(e) => setAdults(e.target.value)}
+            required
+            style={{ width: '100%', padding: '5px' }}
+          />
+        </div>
+        <div style={{ marginBottom: '10px' }}>
+          <label>Children:</label>
+          <input
+            type="number"
+            value={children}
+            onChange={(e) => setChildren(e.target.value)}
+            required
+            style={{ width: '100%', padding: '5px' }}
           />
         </div>
         <div style={{ marginBottom: '10px' }}>
@@ -150,3 +189,4 @@ const popupStyle = {
 };
 
 export default AddRoom;
+

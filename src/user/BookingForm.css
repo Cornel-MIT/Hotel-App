@@ -1,0 +1,54 @@
+.booking-form {
+    display: flex;
+    justify-content: center;
+    padding: 20px;
+}
+
+.booking-form-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #222;
+    padding: 20px;
+    border-radius: 8px;
+    width: 100%;
+    max-width: 1000px;
+    color: white;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin: 0 10px;
+}
+
+input, select {
+    padding: 8px;
+    margin-top: 5px;
+    width: 150px;
+    border-radius: 3px;
+    border: none;
+}
+
+.guests {
+    display: flex;
+}
+
+.guests select {
+    margin-left: 10px;
+}
+
+.checkout-btn {
+    background-color: #c3a375;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+.checkout-btn:hover {
+    background-color: #af8758;
+}
