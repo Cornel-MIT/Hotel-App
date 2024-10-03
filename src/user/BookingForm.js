@@ -65,7 +65,7 @@ const BookingForm = () => {
                     </div>
                 </div>
 
-                <button type="submit" className="checkout-btn">Checkout Now</button>
+                <button type="submit" className="checkout-btn">Check Availability</button>
             </form>
         </div>
     );

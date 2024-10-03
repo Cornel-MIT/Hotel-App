@@ -3,7 +3,7 @@ body, html {
     margin: 0;
   }
   
-  /* body {
+  body {
     background-image: url('../media/commercial-kitchen.jpg');
     background-size: cover; 
     background-position: center; 
@@ -11,7 +11,7 @@ body, html {
     display: flex; 
     justify-content: center; 
     align-items: center; 
-  } */
+  }
   
   .form {
     background-color: #fff;
