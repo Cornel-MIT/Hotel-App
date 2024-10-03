@@ -28,7 +28,7 @@ const Nav = () => {
                         <h3>Home</h3>
                     </Link>
 
-                    <Link to="/bookings" className="nav-option option2">
+                    <Link to="/admin/bookings" className="nav-option option2">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183322/9.png"
                             className="nav-img"
@@ -37,7 +37,7 @@ const Nav = () => {
                         <h3>Bookings</h3>
                     </Link>
 
-                    <Link to="/add-rooms" className="nav-option option3">
+                    <Link to="/admin/add-rooms" className="nav-option option3">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/5.png"
                             className="nav-img"
@@ -46,7 +46,7 @@ const Nav = () => {
                         <h3>Add Rooms</h3>
                     </Link>
 
-                    <Link to="/hotels" className="nav-option option4">
+                    <Link to="/admin/hotels" className="nav-option option4">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183321/6.png"
                             className="nav-img"
@@ -55,7 +55,7 @@ const Nav = () => {
                         <h3>Hotel</h3>
                     </Link>
 
-                    <Link to="/profile" className="nav-option option5">
+                    <Link to="/admin/profile" className="nav-option option5">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183323/10.png"
                             className="nav-img"
@@ -64,7 +64,7 @@ const Nav = () => {
                         <h3>Profile</h3>
                     </Link>
 
-                    <Link to="/settings" className="nav-option option6">
+                    <Link to="/admin/settings" className="nav-option option6">
                         <img
                             src="https://media.geeksforgeeks.org/wp-content/uploads/20221210183320/4.png"
                             className="nav-img"

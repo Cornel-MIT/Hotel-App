@@ -8,7 +8,7 @@ import '../App.css';
 
 const Home = () => {
   return (
-    <div>
+    <div className='HomePage'>
       <Header />
       <h1 className=''>Welcome to Our Hotel</h1>
       <HeroSection />

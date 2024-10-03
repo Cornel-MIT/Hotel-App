@@ -100,57 +100,115 @@
 // export default App;
 
 
+// import React from 'react';
+// import { Routes, Route, Navigate } from 'react-router-dom';
+// import { useAuth } from './auth/useAuth';
+// import PrivateRoute from './auth/PrivateRoute';
+// import AdminHome from './admin/Home';
+// import UserHome from './user/Home';
+// import AddRooms from './admin/AddRooms';
+// import Bookings from './admin/Bookings';
+// import Hotels from './admin/Hotels';
+// import Profile from './admin/Profile';
+// import RoomDetails from './user/RoomDetails';
+// import AuthForm from './admin/AuthForm';
+
+// const App = () => {
+//   const { user } = useAuth();
+
+//   return (
+//     <Routes>
+//       <Route path="/admin/*" element={<PrivateRoute><AdminApp /></PrivateRoute>} />
+
+//       <Route path="/user/*" element={<UserApp />} />
+
+//       <Route path="/authform" element={<AuthForm />} />
+
+//       <Route path="*" element={<Navigate to={user ? "/admin" : "/user"} />} />
+//     </Routes>
+//   );
+// };
+
+// const AdminApp = () => {
+//   return (
+//     <Routes>
+//       <Route path="/" element={<AdminHome />} />
+//       <Route path="/add-rooms" element={<AddRooms />} />
+//       <Route path="/bookings" element={<Bookings />} />
+//       <Route path="/hotels" element={<Hotels />} />
+//       <Route path="/profile" element={<Profile />} />
+//     </Routes>
+//   );
+// };
+
+// const UserApp = () => {
+//   const rooms = []; 
+//   return (
+//     <Routes>
+//       <Route path="/" element={<UserHome />} />
+//       <Route path="/rooms/:roomId" element={<RoomDetails rooms={rooms} />} />
+//     </Routes>
+//   );
+// };
+
+// export default App;
+
+
+
 import React from 'react';
-import { Routes, Route, Navigate } from 'react-router-dom';
-import { useAuth } from './auth/useAuth';
-import PrivateRoute from './auth/PrivateRoute';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import AdminNav from './admin/Nav';
+import UserNav from './user/Nav'; 
 import AdminHome from './admin/Home';
-import UserHome from './user/Home';
-import AddRooms from './admin/AddRooms';
+import UserHome from './user/Home'; 
 import Bookings from './admin/Bookings';
+import AddRooms from './admin/AddRooms';
 import Hotels from './admin/Hotels';
 import Profile from './admin/Profile';
-import RoomDetails from './user/RoomDetails';
+import Settings from './admin/Settings';
 import AuthForm from './admin/AuthForm';
+import RoomDetails from './user/RoomDetails'; 
+import PrivateRoute from './auth/PrivateRoute';
+import { useAuth } from './auth/useAuth';
+import './App.css';
 
 const App = () => {
-  const { user } = useAuth();
+    const { user } = useAuth();
 
-  return (
-    <Routes>
-      <Route path="/admin/*" element={<PrivateRoute><AdminApp /></PrivateRoute>} />
+    return (
+        <Routes>
+            <Route path="/admin/*" element={
+                <PrivateRoute>
+                    <div>
+                        <AdminNav />
+                        <Routes>
+                            <Route index element={<AdminHome />} />
+                            <Route path="bookings" element={<Bookings />} />
+                            <Route path="add-rooms" element={<AddRooms />} />
+                            <Route path="hotels" element={<Hotels />} />
+                            <Route path="profile" element={<Profile />} />
+                            <Route path="settings" element={<Settings />} />
+                        </Routes>
+                    </div>
+                </PrivateRoute>
+            } />
 
-      <Route path="/user/*" element={<UserApp />} />
+            <Route path="/user/*" element={
+                <div>
+                    <UserNav />
+                    <Routes>
+                        <Route index element={<UserHome />} />
+                        <Route path="rooms/:roomId" element={<RoomDetails />} />
+                    </Routes>
+                </div>
+            } />
 
-      <Route path="/authform" element={<AuthForm />} />
+            <Route path="/authform" element={<AuthForm />} />
 
-      <Route path="*" element={<Navigate to={user ? "/admin" : "/user"} />} />
-    </Routes>
-  );
-};
-
-const AdminApp = () => {
-  return (
-    <Routes>
-      <Route path="/" element={<AdminHome />} />
-      <Route path="/add-rooms" element={<AddRooms />} />
-      <Route path="/bookings" element={<Bookings />} />
-      <Route path="/hotels" element={<Hotels />} />
-      <Route path="/profile" element={<Profile />} />
-    </Routes>
-  );
-};
-
-const UserApp = () => {
-  const rooms = []; 
-  return (
-    <Routes>
-      <Route path="/" element={<UserHome />} />
-      <Route path="/rooms/:roomId" element={<RoomDetails rooms={rooms} />} />
-    </Routes>
-  );
+            <Route path="/" element={<Navigate to={user ? "/admin" : "/user"} replace />} />
+            <Route path="*" element={<Navigate to={user ? "/admin" : "/user"} replace />} />
+        </Routes>
+    );
 };
 
 export default App;
-
-
