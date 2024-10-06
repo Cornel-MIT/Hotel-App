@@ -18,17 +18,34 @@ const PaymentForm = () => {
 
     const cardElement = elements.getElement(CardNumberElement);
 
-    const { error, paymentMethod } = await stripe.createPaymentMethod({
-      type: 'card',
-      card: cardElement,
-    });
+    // const { error, paymentMethod } = await stripe.createPaymentMethod({
+    //   type: 'card',
+    //   card: cardElement,
+    // });
 
-    if (error) {
-      setError(error.message);
-    } else {
-      console.log('PaymentMethod:', paymentMethod);
-      alert('Payment successful!');
+    try {
+      const { error, paymentMethod } = await stripe.createPaymentMethod({
+        type: 'card',
+        card: cardElement,
+        billing_details: {
+          metadata: {
+            roomId: roomData.id,
+            roomName: roomData.roomName,
+            price: roomData.price
+          }
+        }
+      });
+
+      if (error) {
+        setError(error.message);
+      } else {
+        console.log('PaymentMethod:', paymentMethod);
+        alert('Payment successful! Room booked.');
+      }
+    } catch (err) {
+      setError('An unexpected error occurred.');
     }
+    
     setProcessing(false);
   };
 
