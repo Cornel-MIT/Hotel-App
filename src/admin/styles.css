@@ -17,16 +17,7 @@ font-family: "Poppins", sans-serif;
 --Border-color: #3f0097; 
 --one-use-color: #3f0097; 
 --two-use-color: #5500cb; 
-} 
-body { 
-    background-image: url('../media/lagoon-beach-hotel-spa 2.jpg');
-    background-size: cover; 
-    background-position: center; 
-    background-repeat: no-repeat;
-    display: flex; 
-    justify-content: center; 
-    align-items: center;  
-} 
+}
 
 .home-container {
     display: flex;
