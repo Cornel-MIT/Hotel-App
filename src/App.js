@@ -237,6 +237,8 @@ import BestHotels from './components/BestHotels';
 import Footer from './components/Footer';
 import BookingForm from './user/BookingForm';
 import './App.css';
+import BookingPage from './components/BookingPage';
+import BookingSuccess from './components/BookingSuccess';
 
 const App = () => {
     const { user } = useAuth();
@@ -274,6 +276,8 @@ const App = () => {
                             </div>
                         } />
                         <Route path="rooms/:roomId" element={<RoomDetails />} />
+                        <Route path="/booking" element={<BookingPage />} />
+                        <Route path="/BookingSuccess" element={<BookingSuccess />} />
                     </Routes>
                 </div>
             } />

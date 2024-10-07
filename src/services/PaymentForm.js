@@ -1,52 +1,80 @@
 import React, { useState } from 'react';
 import { CardNumberElement, CardExpiryElement, CardCvcElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { useNavigate } from 'react-router-dom';
+import { getFunctions, httpsCallable } from 'firebase/functions';
+import { doc, setDoc, serverTimestamp } from 'firebase/firestore';
+import { db } from '../firebase';
 
-const PaymentForm = () => {
+const PaymentForm = ({ roomData }) => {
   const stripe = useStripe();
   const elements = useElements();
+  const navigate = useNavigate();
   const [error, setError] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [cardBrand, setCardBrand] = useState('');
+  
+  const functions = getFunctions();
+  const createPaymentIntent = httpsCallable(functions, 'createPaymentIntent');
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     setProcessing(true);
 
     if (!stripe || !elements) {
+      setError('Stripe has not been initialized.');
+      setProcessing(false);
       return;
     }
 
-    const cardElement = elements.getElement(CardNumberElement);
-
-    // const { error, paymentMethod } = await stripe.createPaymentMethod({
-    //   type: 'card',
-    //   card: cardElement,
-    // });
-
     try {
-      const { error, paymentMethod } = await stripe.createPaymentMethod({
-        type: 'card',
-        card: cardElement,
-        billing_details: {
-          metadata: {
-            roomId: roomData.id,
-            roomName: roomData.roomName,
-            price: roomData.price
-          }
+      const result = await createPaymentIntent({
+        amount: roomData.totalPrice * 100, 
+        roomId: roomData.id,
+        checkIn: roomData.checkIn,
+        checkOut: roomData.checkOut
+      });
+
+      const clientSecret = result.data.clientSecret;
+
+      const paymentResult = await stripe.confirmCardPayment(clientSecret, {
+        payment_method: {
+          card: elements.getElement(CardNumberElement),
+          billing_details: {
+            name: roomData.customerName || 'Guest'
+          },
         }
       });
 
-      if (error) {
-        setError(error.message);
+      if (paymentResult.error) {
+        setError(paymentResult.error.message);
       } else {
-        console.log('PaymentMethod:', paymentMethod);
-        alert('Payment successful! Room booked.');
+
+        const bookingRef = doc(db, 'bookings', paymentResult.paymentIntent.id);
+        await setDoc(bookingRef, {
+          roomId: roomData.id,
+          roomName: roomData.roomName,
+          checkIn: roomData.checkIn,
+          checkOut: roomData.checkOut,
+          totalPrice: roomData.totalPrice,
+          paymentIntentId: paymentResult.paymentIntent.id,
+          status: 'confirmed',
+          createdAt: serverTimestamp()
+        });
+
+        navigate('/booking-success', { 
+          state: { 
+            bookingDetails: {
+              ...roomData,
+              paymentIntentId: paymentResult.paymentIntent.id
+            }
+          }
+        });
       }
     } catch (err) {
-      setError('An unexpected error occurred.');
+      setError(err.message || 'An unexpected error occurred.');
+    } finally {
+      setProcessing(false);
     }
-    
-    setProcessing(false);
   };
 
   const inputStyle = {
@@ -89,8 +117,16 @@ const PaymentForm = () => {
 
   return (
     <div style={{ maxWidth: '400px', margin: '40px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', fontFamily: 'Arial, sans-serif' }}>
-      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Payment Form</h2>
+      <h2 style={{ textAlign: 'center', marginBottom: '20px' }}>Secure Payment</h2>
       <form onSubmit={handleSubmit}>
+        <div style={{ marginBottom: '20px' }}>
+          <h3>Booking Summary</h3>
+          <p>Room: {roomData.roomName}</p>
+          <p>Check-in: {roomData.checkIn}</p>
+          <p>Check-out: {roomData.checkOut}</p>
+          <p>Total: R {roomData.totalPrice}</p>
+        </div>
+        
         <label style={labelStyle}>
           <span style={iconStyle}>{getCardIcon(cardBrand)}</span> Card Number
         </label>
@@ -138,12 +174,13 @@ const PaymentForm = () => {
             color: 'white',
             border: 'none',
             borderRadius: '4px',
-            cursor: 'pointer',
+            cursor: !stripe || processing ? 'not-allowed' : 'pointer',
             fontSize: '16px',
             fontWeight: 'bold',
+            opacity: (!stripe || processing) ? 0.7 : 1,
           }}
         >
-          {processing ? 'Processing...' : 'Pay Now'}
+          {processing ? 'Processing...' : `Pay R ${roomData.totalPrice}`}
         </button>
       </form>
       {error && <div style={{ color: '#9e2146', marginTop: '10px', textAlign: 'center' }}>{error}</div>}
