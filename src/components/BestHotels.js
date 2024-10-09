@@ -43,7 +43,20 @@ const BestHotels = () => {
   }, []);
 
   const handleBookNow = (room) => {
-    navigate('/booking', { state: { roomData: room } });
+    navigate('/user/booking', { 
+      state: { 
+        roomData: {
+          id: room.id,
+          imageUrl: room.imageUrl,
+          roomName: room.roomName,
+          price: room.price,
+          availableDays: room.availableDays,
+          adults: room.adults,
+          children: room.children,
+          description: room.description
+        } 
+      }
+    });
   };
 
   if (loading) {
@@ -86,7 +99,10 @@ const BestHotels = () => {
             </div>
             <button 
               className="book-now-btn" 
-              onClick={() => handleBookNow(selectedRoom)}
+              onClick={() => {
+                handleBookNow(selectedRoom);
+                setSelectedRoom(null); 
+              }}
             >
               Book Now
             </button>
