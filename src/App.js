@@ -113,6 +113,7 @@ import BookingForm from './user/BookingForm';
 import './App.css';
 import BookingPage from './components/BookingPage';
 import BookingSuccess from './components/BookingSuccess';
+import PaymentPage from './components/PaymentPage';
 
 const App = () => {
     const { user } = useAuth();
@@ -152,8 +153,7 @@ const App = () => {
                         <Route path="rooms/:roomId" element={<RoomDetails />} />
                         <Route path="booking" element={<BookingPage />} />
                         <Route path="booking-success" element={<BookingSuccess />} />
-                        {/* <Route path="/user/booking" element={<BookingPage />} />
-                        <Route path="/user/booking-success" element={<BookingSuccess />} /> */}
+                        <Route path="booking/payment" element={<PaymentPage />} />
                     </Routes>
                 </div>
             } />
