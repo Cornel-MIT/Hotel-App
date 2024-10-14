@@ -17,7 +17,7 @@ const BookingForm = () => {
         <div className="booking-form">
             <form onSubmit={handleSubmit} className="booking-form-container">
                 <div className="form-group">
-                    <label>Check In</label>
+                    <label className='labels'>Check In</label>
                     <input
                         type="date"
                         value={checkIn}
@@ -28,7 +28,7 @@ const BookingForm = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Check Out</label>
+                    <label className='labels'>Check Out</label>
                     <input
                         type="date"
                         value={checkOut}
@@ -39,7 +39,7 @@ const BookingForm = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Rooms</label>
+                    <label className='labels'>Rooms</label>
                     <select value={rooms} onChange={(e) => setRooms(e.target.value)}>
                         <option value={1}>1 Room</option>
                         <option value={2}>2 Rooms</option>
@@ -49,7 +49,7 @@ const BookingForm = () => {
                 </div>
 
                 <div className="form-group">
-                    <label>Guests</label>
+                    <label className='labels'>Guests</label>
                     <div className="guests">
                         <select value={adults} onChange={(e) => setAdults(e.target.value)}>
                             <option value={1}>1 Adult</option>

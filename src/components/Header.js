@@ -1,8 +1,14 @@
 import React from 'react';
-import './Header.css'; 
-import logo from '../media/Logo2-removebg-preview.png'; 
-
+import './Header.css';
+import logo from '../media/Logo2-removebg-preview.png';
+import { useNavigate } from 'react-router-dom'; 
 const Header = () => {
+  const navigate = useNavigate(); 
+
+  const handleProfileClick = () => {
+    navigate('/profile'); 
+  };
+
   return (
     <header className="header">
       <div className="container">
@@ -24,6 +30,13 @@ const Header = () => {
             <button className="auth-btn register-btn">Register</button>
           </div>
         </nav>
+        <div className="profile-icon" onClick={handleProfileClick} style={{ cursor: 'pointer', marginLeft: '20px' }}>
+              <img 
+                src="https://via.placeholder.com/30" 
+                alt="Profile" 
+                style={{ width: '30px', height: '30px', borderRadius: '50%' }} 
+              />
+        </div>
       </div>
     </header>
   );

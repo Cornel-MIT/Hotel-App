@@ -31,6 +31,10 @@ input, select {
     border: none;
 }
 
+.labels {
+    color: white;
+}
+
 .guests {
     display: flex;
 }
@@ -47,7 +51,7 @@ input, select {
     border-radius: 5px;
     cursor: pointer;
     margin-left: 20px;
-    margin-top: 25px;
+    margin-top: 37px;
 }
 
 .checkout-btn:hover {
