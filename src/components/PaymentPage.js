@@ -1,48 +1,121 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
-import PaymentForm from '../services/PaymentForm'; 
+import { 
+  Elements, 
+  CardElement, 
+  useStripe, 
+  useElements 
+} from '@stripe/react-stripe-js';
+import './PaymentForm.css';
 
-const stripePromise = loadStripe('');
+const stripePromise = loadStripe('myKey');
 
-const PaymentPage = () => {
+const PaymentForm = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const bookingDetails = location.state?.bookingDetails;
 
+  const [error, setError] = useState(null);
+  const [cardError, setCardError] = useState(null);
+  const [processing, setProcessing] = useState(false);
+  const [succeeded, setSucceeded] = useState(false);
+
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleCardChange = (event) => {
+    setCardError(event.error ? event.error.message : "");
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    if (!stripe || !elements) {
+      return;
+    }
+
+    setProcessing(true);
+
+    const { error, paymentMethod } = await stripe.createPaymentMethod({
+      type: 'card',
+      card: elements.getElement(CardElement),
+      billing_details: {
+        name: bookingDetails.name, 
+        email: bookingDetails.email, 
+      },
+    });
+
+    if (error) {
+      setError(error.message);
+      setProcessing(false);
+      setSucceeded(false);
+    } else {
+      setError(null);
+      setSucceeded(true);
+      console.log('Payment successful!', paymentMethod);
+
+      setTimeout(() => {
+        navigate('/user/booking-success', { state: { bookingDetails } });
+      }, 2000); 
+    }
+  };
+
   if (!bookingDetails) {
-    return (
-      <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-6">
-          <h2 className="text-2xl font-bold text-center text-gray-900 mb-4">
-            No Booking Details
-          </h2>
-          <p className="text-gray-600 text-center mb-6">
-            Please start your booking process from the room selection page.
-          </p>
-          <div className="text-center">
-            <button 
-              onClick={() => navigate('/user')}
-              className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition-colors duration-300"
-            >
-              Return to Rooms
-            </button>
-          </div>
-        </div>
-      </div>
-    );
+    return <div className="error-message">Error: No booking details found.</div>;
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-3xl mx-auto">
-        <Elements stripe={stripePromise}>
-          <PaymentForm roomData={bookingDetails} />
-        </Elements>
+    <div className="payment-form-container">
+      <h2>Complete Your Payment</h2>
+      <div className="booking-summary">
+        <h3>Booking Summary</h3>
+        <p>Room: {bookingDetails.roomName}</p>
+        <p>Check-in: {bookingDetails.checkIn}</p>
+        <p>Check-out: {bookingDetails.checkOut}</p>
+        <p>Total Price: R {bookingDetails.totalPrice}</p>
       </div>
+      <form onSubmit={handleSubmit}>
+        <div className="form-row">
+          <label htmlFor="card-element">Credit or debit card</label>
+          <CardElement 
+            id="card-element" 
+            onChange={handleCardChange}
+            options={{
+              style: {
+                base: {
+                  fontSize: '16px',
+                  color: '#424770',
+                  '::placeholder': {
+                    color: '#aab7c4',
+                  },
+                },
+                invalid: {
+                  color: '#9e2146',
+                },
+              },
+            }}
+          />
+        </div>
+        {cardError && <div className="card-error">{cardError}</div>}
+        {error && <div className="error-message">{error}</div>}
+        {succeeded && <div className="success-message">Payment successful!</div>}
+        <button 
+          type="submit" 
+          disabled={!stripe || processing || succeeded}
+          className={`pay-button ${(processing || succeeded) ? 'disabled' : ''}`}
+        >
+          {processing ? 'Processing...' : succeeded ? 'Payment Successful' : 'Pay Now'}
+        </button>
+      </form>
     </div>
   );
 };
 
-export default PaymentPage;
+const StripePaymentForm = () => (
+  <Elements stripe={stripePromise}>
+    <PaymentForm />
+  </Elements>
+);
+
+export default StripePaymentForm;
