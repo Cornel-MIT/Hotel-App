@@ -4,6 +4,7 @@
 
 - [Introduction](#introduction)
 - [Features](#features)
+- [Images](#images)
 
 ## Introduction
 
@@ -17,6 +18,9 @@ A few of the things you can do with Hotel App:
 - Users can view a list of available accommodations.
 - Users can book accommodations.
 - Payments via Stripe
+- Admin
+  - Admins can add new accommodations with details like room type, capacity, price, availability, etc.
+  - Admins can view reservations, including check-in and check-out dates, guest details, room details
 
 ## Images
 
