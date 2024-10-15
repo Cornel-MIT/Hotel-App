@@ -1,7 +1,7 @@
 import React from 'react';
 import './Styles/Profile.css'; 
 
-const Profile = () => {
+const UserProfile = () => {
     return (
         <div className="profile-container">
             <h1>User Profile</h1>
@@ -22,4 +22,4 @@ const Profile = () => {
     );
 };
 
-export default Profile;
+export default UserProfile;

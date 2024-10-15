@@ -101,6 +101,7 @@ import './App.css';
 import BookingPage from './components/BookingPage';
 import BookingSuccessPage from './components/BookingSuccessPage ';
 import PaymentPage from './components/PaymentPage';
+import UserProfile from './user/UserProfile';
 
 const App = () => {
     const { user } = useAuth();
@@ -139,7 +140,7 @@ const App = () => {
                         } />
                         <Route path="rooms/:roomId" element={<RoomDetails />} />
                         <Route path="booking" element={<BookingPage />} />
-                        <Route path="/user/profile" element={<Profile />} />
+                        <Route path="/user/profile" element={<UserProfile />} />
                         <Route path="booking/payment" element={<PaymentPage />} />
                         <Route path="booking-success" element={<BookingSuccessPage />} />
                     </Routes>
