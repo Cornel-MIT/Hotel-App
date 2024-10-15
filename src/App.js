@@ -140,7 +140,7 @@ const App = () => {
                         } />
                         <Route path="rooms/:roomId" element={<RoomDetails />} />
                         <Route path="booking" element={<BookingPage />} />
-                        <Route path="/user/profile" element={<UserProfile />} />
+                        <Route path="/profile" element={<UserProfile />} />
                         <Route path="booking/payment" element={<PaymentPage />} />
                         <Route path="booking-success" element={<BookingSuccessPage />} />
                     </Routes>
