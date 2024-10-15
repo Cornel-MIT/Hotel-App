@@ -1,10 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { getAuth, onAuthStateChanged } from "firebase/auth";
 import './BookingPage.css';
 
 const BookingPage = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const auth = getAuth();
+  const [user, setUser] = useState(null);
+
   const roomData = location.state?.roomData || {
     id: '',
     imageUrl: '',
@@ -22,6 +26,14 @@ const BookingPage = () => {
   const [numberOfDays, setNumberOfDays] = useState(1);
 
   useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+
+    return () => unsubscribe();
+  }, [auth]);
+
+  useEffect(() => {
     if (checkIn && checkOut) {
       const start = new Date(checkIn);
       const end = new Date(checkOut);
@@ -35,6 +47,12 @@ const BookingPage = () => {
   const handleProceedToPayment = () => {
     if (!checkIn || !checkOut) {
       alert("Please select both check-in and check-out dates before proceeding to payment.");
+      return;
+    }
+
+    if (!user) {
+      alert("Please log in to proceed with your booking.");
+      navigate('/login', { state: { from: location.pathname } });
       return;
     }
 
