@@ -1,0 +1,54 @@
+.admin-booked-rooms {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+  }
+  
+  .admin-booked-rooms h2 {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .admin-booked-rooms table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  }
+  
+  .admin-booked-rooms th,
+  .admin-booked-rooms td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .admin-booked-rooms th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+    color: #333;
+    text-transform: uppercase;
+    font-size: 14px;
+  }
+  
+  .admin-booked-rooms tr:hover {
+    background-color: #f5f5f5;
+  }
+  
+  .admin-booked-rooms tr:last-child td {
+    border-bottom: none;
+  }
+  
+  @media (max-width: 600px) {
+    .admin-booked-rooms table {
+      font-size: 14px;
+    }
+  
+    .admin-booked-rooms th,
+    .admin-booked-rooms td {
+      padding: 8px 10px;
+    }
+  }

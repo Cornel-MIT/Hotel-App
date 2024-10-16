@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { collection, getDocs } from 'firebase/firestore';
+import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { db } from '../firebase'; 
 import './BestHotels.css';
@@ -23,14 +23,17 @@ const BestHotels = () => {
   const [selectedRoom, setSelectedRoom] = useState(null);
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const fetchRooms = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, 'rooms'));
+        const q = query(collection(db, 'rooms'), where('availableDays', '>', 0));
+        const querySnapshot = await getDocs(q);
         const roomData = querySnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         }));
+        console.log('Fetched rooms:', roomData);
         setRooms(roomData);
         setLoading(false);
       } catch (error) {
@@ -46,6 +49,7 @@ const BestHotels = () => {
     navigate('/user/booking', { 
       state: { 
         roomData: {
+          roomId: room.id, 
           id: room.id,
           imageUrl: room.imageUrl,
           roomName: room.roomName,

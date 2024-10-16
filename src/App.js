@@ -99,7 +99,7 @@ import Footer from './components/Footer';
 import BookingForm from './user/BookingForm';
 import './App.css';
 import BookingPage from './components/BookingPage';
-import BookingSuccessPage from './components/BookingSuccessPage ';
+import BookingSuccessPage from './components/BookingSuccessPage';
 import PaymentPage from './components/PaymentPage';
 import UserProfile from './user/UserProfile';
 
