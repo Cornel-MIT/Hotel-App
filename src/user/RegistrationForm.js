@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { useAuth } from '../auth/useAuth'; 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { doc, setDoc } from "firebase/firestore";
 import { db } from '../firebase';  
@@ -15,8 +15,10 @@ const RegistrationForm = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    
     const navigate = useNavigate();
-    const auth = getAuth();
+    const location = useLocation();
+    const { register } = useAuth(); 
     const storage = getStorage();
 
     const validatePassword = (password) => {
@@ -42,8 +44,7 @@ const RegistrationForm = () => {
         }
 
         try {
-            const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-            const user = userCredential.user;
+            const user = await register(email, password, firstName, lastName); // Pass additional params
 
             if (profilePicture) {
                 const imageRef = ref(storage, `profilePictures/${user.uid}`);
@@ -55,16 +56,11 @@ const RegistrationForm = () => {
                     lastName,
                     email,
                     photoURL
-                });
-            } else {
-                await setDoc(doc(db, 'users', user.uid), {
-                    firstName,
-                    lastName,
-                    email
-                });
+                }, { merge: true });
             }
 
-            navigate('/user/profile');
+            const from = location.state?.from || '/user/profile';
+            navigate(from);
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setError('An account with this email already exists.');

@@ -16,28 +16,30 @@ export const useAuth = () => {
         localStorage.setItem('user', JSON.stringify(user));
       } else {
         setUser(null);
-        localStorage.removeItem('user');
+        localStorage.removeItem('user'); 
       }
     });
 
     return () => unsubscribe();
   }, []);
 
-  const register = async (email, password) => {
+  const register = async (email, password, firstName, lastName) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
       await setDoc(doc(db, 'users', user.uid), {
         email: user.email,
-        role: 'admin' 
+        firstName,
+        lastName,
+        role: 'user' 
       });
 
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user)); 
       return user;
     } catch (error) {
-      throw error;
+      throw error; 
     }
   };
 
@@ -51,7 +53,7 @@ export const useAuth = () => {
 
       return user;
     } catch (error) {
-      throw error;
+      throw error; 
     }
   };
 
@@ -61,9 +63,9 @@ export const useAuth = () => {
       setUser(null);
       localStorage.removeItem('user'); 
     } catch (error) {
-      throw error;
+      throw error; 
     }
   };
 
-  return { user, register, login, logout };
+  return { user, register, login, logout }; 
 };
