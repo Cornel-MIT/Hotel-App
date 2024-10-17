@@ -41,6 +41,22 @@
   .admin-booked-rooms tr:last-child td {
     border-bottom: none;
   }
+
+  .admin-booked-rooms button {
+    margin-right: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  .admin-booked-rooms button:first-child {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .admin-booked-rooms button:last-child {
+    background-color: #f44336;
+    color: white;
+  }
   
   @media (max-width: 600px) {
     .admin-booked-rooms table {

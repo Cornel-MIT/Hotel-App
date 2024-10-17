@@ -33,6 +33,8 @@ const Bookings = () => {
   const updateCountdown = async () => {
     const updatedRooms = await Promise.all(
       bookedRooms.map(async (room) => {
+        if (room.status !== 'approved') return room;
+
         const newDaysRemaining = room.daysRemaining - 1;
         if (newDaysRemaining <= 0) {
           await deleteDoc(doc(db, 'bookedRooms', room.id));
@@ -52,13 +54,41 @@ const Bookings = () => {
     setBookedRooms(updatedRooms.filter(room => room !== null));
   };
 
+  const approveBooking = async (bookingId) => {
+    try {
+      const bookingRef = doc(db, 'bookedRooms', bookingId);
+      await updateDoc(bookingRef, { status: 'approved' });
+      
+      setBookedRooms(bookedRooms.map(room => 
+        room.id === bookingId ? { ...room, status: 'approved' } : room
+      ));
+    } catch (error) {
+      console.error('Error approving booking:', error);
+    }
+  };
+
+  const declineBooking = async (bookingId, roomId, numberOfDays) => {
+    try {
+      await deleteDoc(doc(db, 'bookedRooms', bookingId));
+
+      const roomRef = doc(db, 'rooms', roomId);
+      await updateDoc(roomRef, {
+        availableDays: increment(numberOfDays)
+      });
+
+      setBookedRooms(bookedRooms.filter(room => room.id !== bookingId));
+    } catch (error) {
+      console.error('Error declining booking:', error);
+    }
+  };
+
   if (loading) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="admin-booked-rooms">
-      <h2>Currently Booked Rooms</h2>
+      <h2>Room Bookings</h2>
       <table>
         <thead>
           <tr>
@@ -66,6 +96,8 @@ const Bookings = () => {
             <th>Check-in</th>
             <th>Check-out</th>
             <th>Days Remaining</th>
+            <th>Status</th>
+            <th>Actions</th>
           </tr>
         </thead>
         <tbody>
@@ -75,6 +107,15 @@ const Bookings = () => {
               <td>{room.checkIn}</td>
               <td>{room.checkOut}</td>
               <td>{room.daysRemaining}</td>
+              <td>{room.status || 'pending'}</td>
+              <td>
+                {room.status !== 'approved' && (
+                  <>
+                    <button onClick={() => approveBooking(room.id)}>Approve</button>
+                    <button onClick={() => declineBooking(room.id, room.roomId, room.numberOfDays)}>Decline</button>
+                  </>
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
