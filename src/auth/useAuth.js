@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
 import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from 'firebase/auth';
+import { 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  sendEmailVerification as firebaseSendEmailVerification
+} from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
 
 export const useAuth = () => {
@@ -32,8 +37,11 @@ export const useAuth = () => {
         email: user.email,
         firstName,
         lastName,
-        role: 'user' 
+        role: 'user',
+        emailVerified: false
       });
+
+      await sendEmailVerification(user);
 
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user)); 
@@ -47,6 +55,10 @@ export const useAuth = () => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
+      if (!user.emailVerified) {
+        throw new Error('Please verify your email before logging in.');
+      }
 
       setUser(user);
       localStorage.setItem('user', JSON.stringify(user)); 
@@ -67,5 +79,28 @@ export const useAuth = () => {
     }
   };
 
-  return { user, register, login, logout }; 
+  const sendEmailVerification = async (user) => {
+    try {
+      await firebaseSendEmailVerification(user);
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const checkEmailVerification = async () => {
+    if (auth.currentUser) {
+      await auth.currentUser.reload();
+      return auth.currentUser.emailVerified;
+    }
+    return false;
+  };
+
+  return { 
+    user, 
+    register, 
+    login, 
+    logout, 
+    sendEmailVerification,
+    checkEmailVerification
+  };
 };

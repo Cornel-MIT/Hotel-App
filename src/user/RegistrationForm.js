@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../auth/useAuth'; 
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
@@ -15,11 +15,20 @@ const RegistrationForm = () => {
     const [profilePicture, setProfilePicture] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [verificationSent, setVerificationSent] = useState(false);
     
     const navigate = useNavigate();
     const location = useLocation();
-    const { register } = useAuth(); 
+    const { register, checkEmailVerification } = useAuth(); 
     const storage = getStorage();
+
+    useEffect(() => {
+        let timer;
+        if (verificationSent) {
+            timer = setInterval(checkVerificationStatus, 5000); 
+        }
+        return () => clearInterval(timer);
+    }, [verificationSent]);
 
     const validatePassword = (password) => {
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{8,}$/;
@@ -44,7 +53,7 @@ const RegistrationForm = () => {
         }
 
         try {
-            const user = await register(email, password, firstName, lastName); // Pass additional params
+            const user = await register(email, password, firstName, lastName);
 
             if (profilePicture) {
                 const imageRef = ref(storage, `profilePictures/${user.uid}`);
@@ -52,15 +61,12 @@ const RegistrationForm = () => {
                 const photoURL = await getDownloadURL(imageRef);
 
                 await setDoc(doc(db, 'users', user.uid), {
-                    firstName,
-                    lastName,
-                    email,
                     photoURL
                 }, { merge: true });
             }
 
-            const from = location.state?.from || '/user/profile';
-            navigate(from);
+            setVerificationSent(true);
+
         } catch (error) {
             if (error.code === 'auth/email-already-in-use') {
                 setError('An account with this email already exists.');
@@ -71,6 +77,24 @@ const RegistrationForm = () => {
             setLoading(false);
         }
     };
+
+    const checkVerificationStatus = async () => {
+        const isVerified = await checkEmailVerification();
+        if (isVerified) {
+            setVerificationSent(false);
+            navigate('/user/profile');
+        }
+    };
+
+    if (verificationSent) {
+        return (
+            <div className="verification-message">
+                <h2>Verification Email Sent</h2>
+                <p>A verification email has been sent to {email}. Please check your inbox and click on the verification link to complete your registration.</p>
+                <p>Once verified, you will be automatically redirected to your profile...😉</p>
+            </div>
+        );
+    }
 
     return (
         <form className="form" onSubmit={handleSubmit}>
