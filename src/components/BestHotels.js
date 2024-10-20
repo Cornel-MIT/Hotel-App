@@ -17,12 +17,26 @@ const Modal = ({ isOpen, onClose, children }) => {
   );
 };
 
+const StarRating = ({ rating }) => {
+  return (
+    <div className="star-rating">
+      {[...Array(5)].map((star, index) => {
+        index += 1;
+        return (
+          <span key={index} className={index <= rating ? "on" : "off"}>
+            &#9733;
+          </span>
+        );
+      })}
+    </div>
+  );
+};
+
 const BestHotels = () => {
   const [rooms, setRooms] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedRoom, setSelectedRoom] = useState(null);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -83,6 +97,10 @@ const BestHotels = () => {
             <p>Price: <strong>R</strong> {room.price} per night</p>
             <p>Available for {room.availableDays} days</p>
             <p>Adults: {room.adults}, Children: {room.children}</p>
+            <div className="rating-container">
+              <StarRating rating={Math.round(room.averageRating || 0)} />
+              <span>({room.totalRatings || 0} ratings)</span>
+            </div>
           </div>
         ))}
       </div>
@@ -100,6 +118,10 @@ const BestHotels = () => {
               <p><strong>Price:</strong> R {selectedRoom.price} per night</p>
               <p><strong>Availability:</strong> {selectedRoom.availableDays} days</p>
               <p><strong>Capacity:</strong> {selectedRoom.adults} Adults, {selectedRoom.children} Children</p>
+              <div className="rating-container">
+                <StarRating rating={Math.round(selectedRoom.averageRating || 0)} />
+                <span>({selectedRoom.totalRatings || 0} ratings)</span>
+              </div>
             </div>
             <button 
               className="book-now-btn" 
