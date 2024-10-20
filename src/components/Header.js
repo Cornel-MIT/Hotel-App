@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './Header.css';
 import logo from '../media/Logo2-removebg-preview.png';
 import { useNavigate } from 'react-router-dom';
+import { FaBars, FaTimes } from 'react-icons/fa'; 
 
 const Header = () => {
+  const [menuOpen, setMenuOpen] = useState(false); 
   const navigate = useNavigate();
 
   const handleProfileClick = () => {
@@ -11,11 +13,15 @@ const Header = () => {
   };
 
   const handleSignInClick = () => {
-    navigate('/login'); 
+    navigate('/login');
   };
 
   const handleRegisterClick = () => {
-    navigate('/register'); 
+    navigate('/register');
+  };
+
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen);
   };
 
   return (
@@ -25,7 +31,7 @@ const Header = () => {
           <img src={logo} alt="Hotel Logo" />
         </div>
 
-        <nav className="nav-container">
+        <nav className={`nav-container ${menuOpen ? 'active' : ''}`}>
           <ul className="nav-links">
             <li><a href="#">Home</a></li>
             <li><a href="#">Rooms</a></li>
@@ -39,7 +45,11 @@ const Header = () => {
             <button className="auth-btn register-btn" onClick={handleRegisterClick}>Register</button>
           </div>
         </nav>
-        
+
+        <div className="hamburger-icon" onClick={toggleMenu}>
+          {menuOpen ? <FaTimes /> : <FaBars />} 
+        </div>
+
         <div className="profile-icon" onClick={handleProfileClick} style={{ cursor: 'pointer', marginLeft: '20px' }}>
           <img 
             src="https://via.placeholder.com/30" 

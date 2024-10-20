@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 import './Styles/RegistrationForm.css';  
 
 const LoginForm = () => {
@@ -8,6 +8,7 @@ const LoginForm = () => {
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(false);
+    const [verificationSent, setVerificationSent] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const auth = getAuth();
@@ -18,7 +19,16 @@ const LoginForm = () => {
         setError(null);
 
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const userCredential = await signInWithEmailAndPassword(auth, email, password);
+            const user = userCredential.user;
+
+            if (!user.emailVerified) {
+                await sendEmailVerification(user);
+                setVerificationSent(true);
+                setLoading(false);
+                return;
+            }
+
             const from = location.state?.from || '/user';
             navigate(from);
         } catch (error) {
@@ -27,12 +37,23 @@ const LoginForm = () => {
             } else if (error.code === 'auth/wrong-password') {
                 setError('Incorrect password. Please try again.');
             } else {
-                setError('An error occurred. Please try again.');
+                setError('An error occurred or email is not yet varified. Please try again.');
             }
         } finally {
             setLoading(false);
         }
     };
+
+    if (verificationSent) {
+        return (
+            <div className="verification-message">
+                <h2>Email Verification Required</h2>
+                <p>A verification email has been sent to {email}. Please check your inbox and click on the verification link to complete your login.</p>
+                <p>Once verified, please try logging in again.</p>
+                <button onClick={() => setVerificationSent(false)}>Back to Login</button>
+            </div>
+        );
+    }
 
     return (
         <form className="form" onSubmit={handleSubmit}>
