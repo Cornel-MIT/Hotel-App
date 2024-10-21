@@ -1,8 +1,9 @@
-.slogan {
-
-}
-
-.hero-section {
+  .slogan {
+    font-family: 'Pattaya', sans-serif;
+    
+  }    
+   
+   .hero-section {
     position: relative;
     height: 400px;
     display: flex;
@@ -30,15 +31,18 @@
     justify-content: center;
     align-items: center;
     text-align: center;
+    padding: 20px; 
   }
   
   .hero-overlay h1 {
-    font-size: 48px;
+    font-family: 'Pattaya', sans-serif;
+    font-size: 3rem; 
   }
   
-  .hero-overlay p {
-    font-size: 24px;
-    margin-top: 10px;
+  .hero-paragraph {
+    font-family: 'Pattaya', sans-serif; 
+    font-size: 1.5rem;
+    margin-top: 60px;
   }
   
   button.prev,
@@ -49,10 +53,11 @@
     color: white;
     border: none;
     padding: 10px;
-    font-size: 24px;
+    font-size: 2rem; 
     cursor: pointer;
     transform: translateY(-50%);
     z-index: 10;
+    transition: background-color 0.3s;
   }
   
   button.prev {
@@ -66,5 +71,37 @@
   button.prev:hover,
   button.next:hover {
     background-color: rgba(0, 0, 0, 0.8);
+  }
+
+  @media (max-width: 768px) {
+    .hero-overlay h1 {
+      font-size: 2.5rem;
+    }
+    
+    .hero-overlay p {
+      font-size: 1.25rem;
+    }
+  
+    button.prev,
+    button.next {
+      font-size: 1.5rem;
+      padding: 8px;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .hero-overlay h1 {
+      font-size: 2rem;
+    }
+  
+    .hero-overlay p {
+      font-size: 1rem;
+    }
+  
+    button.prev,
+    button.next {
+      font-size: 1.25rem;
+      padding: 6px;
+    }
   }
   

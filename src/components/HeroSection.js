@@ -6,6 +6,7 @@ import './HeroSection.css';
 const HeroSection = () => {
   const [images, setImages] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRooms = async () => {
@@ -15,6 +16,7 @@ const HeroSection = () => {
 
       const roomImages = roomList.map((room) => room.imageUrl); 
       setImages(roomImages);
+      setLoading(false);
     };
 
     fetchRooms();
@@ -28,6 +30,19 @@ const HeroSection = () => {
     }, 10000); 
 
     return () => clearInterval(interval); 
+  }, [images]);
+
+  useEffect(() => {
+    const handleKeydown = (event) => {
+      if (event.key === 'ArrowRight') {
+        nextImage();
+      } else if (event.key === 'ArrowLeft') {
+        prevImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeydown);
+    return () => window.removeEventListener('keydown', handleKeydown);
   }, [images]);
 
   const nextImage = () => {
@@ -44,12 +59,16 @@ const HeroSection = () => {
 
   return (
     <div className="hero-section">
-      {images.length > 0 && (
-        <img src={images[currentIndex]} alt="Room Image" className="hero-image" />
+      {loading ? (
+        <p>Loading...</p>
+      ) : (
+        images.length > 0 && (
+          <img src={images[currentIndex]} alt="Room" className="hero-image" />
+        )
       )}
       <div className="hero-overlay">
-        <h1 className='slogan'>Welcome to Eldiablo</h1>
-        <p>Welcome to Eldiablo where we take care of all your desires</p>
+        <h1 className='slogan'>Eldiablo</h1>
+        <p className='hero-paragraph'>Welcome to Eldiablo where we take care of all your desires</p>
       </div>
       <button className="prev" onClick={prevImage}>
         &#10094;

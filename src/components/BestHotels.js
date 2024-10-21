@@ -114,10 +114,10 @@ const BestHotels = () => {
             <h2>{selectedRoom.roomName}</h2>
             <img src={selectedRoom.imageUrl} alt={selectedRoom.roomName} />
             <div className="modal-room-info">
-              <p><strong>Description:</strong> {selectedRoom.description}</p>
-              <p><strong>Price:</strong> R {selectedRoom.price} per night</p>
-              <p><strong>Availability:</strong> {selectedRoom.availableDays} days</p>
-              <p><strong>Capacity:</strong> {selectedRoom.adults} Adults, {selectedRoom.children} Children</p>
+              <p className='details'><strong>Description:</strong> {selectedRoom.description}</p>
+              <p className='details'><strong>Price:</strong> R {selectedRoom.price} per night</p>
+              <p className='details'><strong>Availability:</strong> {selectedRoom.availableDays} days</p>
+              <p className='details'><strong>Capacity:</strong> {selectedRoom.adults} Adults, {selectedRoom.children} Children</p>
               <div className="rating-container">
                 <StarRating rating={Math.round(selectedRoom.averageRating || 0)} />
                 <span>({selectedRoom.totalRatings || 0} ratings)</span>
