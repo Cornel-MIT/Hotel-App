@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getAuth, onAuthStateChanged, signOut } from 'firebase/auth';
 import { doc, getDoc, collection, query, where, getDocs, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
+import { useNavigate } from 'react-router-dom';
 import './Styles/Profile.css'; 
 
 const UserProfile = () => {
@@ -15,6 +16,8 @@ const UserProfile = () => {
     email: '',
     contact: '',
   });
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const auth = getAuth();
@@ -89,10 +92,15 @@ const UserProfile = () => {
 
   const handleLogout = async () => {
     const auth = getAuth();
-    await signOut(auth);
-    setUser(null);
-    setProfileData(null);
-    setBookings([]);
+    try {
+      await signOut(auth);
+      setUser(null);
+      setProfileData(null);
+      setBookings([]);
+      navigate('/'); 
+    } catch (error) {
+      console.error('Error signing out: ', error);
+    }
   };
 
   const handleRating = async (bookingId, roomId, rating) => {
