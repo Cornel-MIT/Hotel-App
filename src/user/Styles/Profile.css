@@ -145,6 +145,35 @@
   }
 
 
+  .status-bar {
+    width: 100%;
+    background-color: #f0f0f0;
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .status-indicator {
+    height: 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    transition: width 0.3s ease;
+  }
+  
+  .status-indicator.pending {
+    width: 50%;
+    background-color: #ffa500;
+  }
+  
+  .status-indicator.approved {
+    width: 100%;
+    background-color: #4caf50;
+  }
+
 @media (max-width: 600px) {
     .profile-container {
         padding: 10px; 

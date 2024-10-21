@@ -141,6 +141,16 @@ const UserProfile = () => {
     );
   };
 
+  const StatusBar = ({ status }) => {
+    return (
+      <div className="status-bar">
+        <div className={`status-indicator ${status}`}>
+          {status === 'pending' ? 'Pending Approval' : 'Approved'}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <div className="user-profile-container">
       <h1>User Profile</h1>
@@ -229,6 +239,7 @@ const UserProfile = () => {
               <p><strong>Check-out:</strong> {booking.checkOut}</p>
               <p><strong>Total Price:</strong> R {booking.totalPrice}</p>
               <p><strong>Days:</strong> {booking.numberOfDays}</p>
+              <StatusBar status={booking.status || 'pending'} />
               <div className="rating-section">
                 <p>Rate this room:</p>
                 <StarRating 
