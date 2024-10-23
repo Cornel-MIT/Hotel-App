@@ -95,6 +95,7 @@ import { useAuth } from './auth/useAuth';
 import Header from './components/Header';
 import HeroSection from './components/HeroSection';
 import BestHotels from './components/BestHotels';
+import Rooms from './components/Rooms';
 import Footer from './components/Footer';
 import BookingForm from './user/BookingForm';
 import './App.css';
@@ -139,6 +140,7 @@ const App = () => {
                             </div>
                         } />
                         <Route path="rooms/:roomId" element={<RoomDetails />} />
+                        <Route path="/rooms" element={<Rooms />} />
                         <Route path="booking" element={<BookingPage />} />
                         <Route path="/profile" element={<UserProfile />} />
                         <Route path="booking/payment" element={<PaymentPage />} />
